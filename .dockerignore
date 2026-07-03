@@ -1,0 +1,20 @@
+node_modules
+dist
+
+.env
+.env.example
+.git
+.gitignore
+.vscode
+
+*.log
+logs
+
+# runtime data, not part of the image — mounted as volumes
+data
+music
+cookies.txt
+
+Dockerfile
+docker-compose.yml
+.dockerignore

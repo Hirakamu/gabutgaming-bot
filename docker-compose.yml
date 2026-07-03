@@ -1,0 +1,17 @@
+services:
+  gabutgaming:
+    build: .
+    image: gabutgaming-bot:latest
+    container_name: gabutgaming-bot
+    restart: unless-stopped
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      DISCORD_GUILD_ID: ${DISCORD_GUILD_ID}
+      VOICE_CHANNEL_ID: ${VOICE_CHANNEL_ID}
+    volumes:
+      - gabutgaming-data:/app/data
+      - ${MUSIC_DIR:-./music}:/app/music:ro
+
+volumes:
+  gabutgaming-data:
