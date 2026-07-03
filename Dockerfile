@@ -18,9 +18,16 @@ FROM node:22-alpine AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 
+# Real ffmpeg from Alpine's repo instead of ffmpeg-static's postinstall
+# download (that fetch hits GitHub release assets and is a common build
+# failure point on hosts with restricted egress). FFMPEG_BIN is
+# ffmpeg-static's own override var: with it set, requiring the package
+# just returns this path instead of touching the network.
+RUN apk add --no-cache ffmpeg
+ENV FFMPEG_BIN=/usr/bin/ffmpeg
+
 COPY package.json package-lock.json ./
-# Scripts run here so ffmpeg-static fetches the linux binary for this image.
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
 COPY --from=builder /app/dist ./dist
 
